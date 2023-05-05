@@ -1,13 +1,16 @@
+import { User } from 'src/users/entities/user.entity';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'documents' })
-export class DocumentEntity {
+export class DocumentEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -17,9 +20,10 @@ export class DocumentEntity {
   @Column()
   description: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ nullable: true })
+  userId: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  // @ApiProperty({ type: () => User })
+  @ManyToOne((_type) => User, (user) => user.docs, { eager: false })
+  user: User;
 }
