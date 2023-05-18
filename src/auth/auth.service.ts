@@ -1,10 +1,14 @@
+import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
-import { User } from 'src/users/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
-import { InvalidatedRefreshTokenError, RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage/refresh-token-ids.storage';
+import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
+import {
+  InvalidatedRefreshTokenError,
+  RefreshTokenIdsStorage,
+} from './authentication/refresh-token-ids.storage/refresh-token-ids.storage';
 import jwtConfig from './config/jwt.config';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { ActiveUserData } from './interface/active-user-data.interface';
@@ -17,6 +21,7 @@ export class AuthService {
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
     private readonly refreshTokenIdsStorage: RefreshTokenIdsStorage,
+    private readonly httpService: HttpService,
   ) {}
 
   async sendUserVerificationCode(phone: string) {
@@ -26,6 +31,11 @@ export class AuthService {
     }
     const otp = this.generateVerificationCode();
     console.log('OTP', otp);
+
+    const smsResult = await this.httpService.axiosRef.get(
+      `https://smsc.kz/sys/send.php?login=App-lawyer&psw=!b7LvQje7@dQRCw&phones=${phone}&mes=Подтверждение primelegal.kz: 1234:${otp}`,
+    );
+    // console.log('SMS', smsResult);
     const otpExpirationDate = new Date(Date.now() + 4 * 60 * 1000);
     await this.userService.createOTP(user, { otp, otpExpirationDate });
 
@@ -37,7 +47,6 @@ export class AuthService {
   }
 
   async validateUser(phone: string, code: number) {
-    console.log('In validateUser');
     const user = await this.userService.findOneByPhone(phone);
     if (!user) {
       throw new UnauthorizedException('Invalid phone number');
@@ -46,13 +55,6 @@ export class AuthService {
     if (!otp) {
       throw new UnauthorizedException('Invalid code');
     }
-
-    // const payload = {
-    //   phone,
-    //   sub: parseInt(user.id),
-    //   role: user.role,
-    // };
-
     return await this.generateToken(user);
   }
 
@@ -132,5 +134,9 @@ export class AuthService {
         expiresIn,
       },
     );
+  }
+
+  async findOne(userId: string) {
+    return await this.userService.findOneById(userId);
   }
 }

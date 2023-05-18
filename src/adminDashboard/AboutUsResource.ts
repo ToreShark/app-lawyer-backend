@@ -1,4 +1,4 @@
-import { AboutUs } from 'src/aboutus/entities/aboutus.entity';
+import { AboutUs } from '../aboutus/entities/aboutus.entity';
 
 export const AboutUsResource = {
   resource: AboutUs,

@@ -7,10 +7,9 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
-import jwtConfig from 'src/auth/config/jwt.config';
+import jwtConfig from '../../../../auth/config/jwt.config';
 import { Request } from 'express';
-import { REQUEST_USER_KEY } from 'src/auth/auth.constants';
+import { REQUEST_USER_KEY } from '../../../../auth/auth.constants';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
@@ -19,12 +18,21 @@ export class AccessTokenGuard implements CanActivate {
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const request = context.switchToHttp().getRequest<Request>();
+
+    if (!request.cookies) {
+      throw new UnauthorizedException('No cookies present in the request');
+    }
+
+    const token = request.cookies['accessToken'];
+
     if (!token) {
+      console.log('No token present in the request');
       throw new UnauthorizedException();
     }
+
     try {
       const payload = await this.jwtService.verifyAsync(
         token,
@@ -35,10 +43,5 @@ export class AccessTokenGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     return true;
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [_, token] = request.headers.authorization?.split(' ') ?? [];
-    return token;
   }
 }

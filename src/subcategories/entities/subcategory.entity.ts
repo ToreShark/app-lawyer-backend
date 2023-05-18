@@ -1,4 +1,5 @@
-import { Category } from 'src/categories/entities/category.entity';
+import { Category } from '../../categories/entities/category.entity';
+import { CommentEntity } from '../../comments/entities/comment.entity';
 import {
   Column,
   PrimaryGeneratedColumn,
@@ -41,6 +42,6 @@ export class Subcategory extends BaseEntity {
   @Column()
   slug: string;
 
-  // @OneToMany(() => CommentEntity, (comment) => comment.subcategory)
-  // comments: CommentEntity[];
+  @OneToMany(() => CommentEntity, (comment) => comment.subcategory)
+  comments: CommentEntity[];
 }

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Subcategory } from 'src/subcategories/entities/subcategory.entity';
+import { Subcategory } from '../subcategories/entities/subcategory.entity';
 import { Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 
@@ -35,6 +35,9 @@ export class CategoriesService {
   }
 
   async findBySlug(slug: string): Promise<Category> {
-    return this.categoriesRepository.findOne({ where: { slug } });
+    return this.categoriesRepository.findOne({
+      where: { slug },
+      relations: ['subcategories'],
+    });
   }
 }

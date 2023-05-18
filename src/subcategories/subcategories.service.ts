@@ -44,9 +44,12 @@ export class SubcategoriesService {
     return await this.subcategoryRepository.findOne(options);
   }
   async findBySlug(slug: string): Promise<Subcategory> {
-    const options = {
-      where: { slug },
-    };
-    return await this.subcategoryRepository.findOne(options);
+    try {
+      const options = { where: { slug } };
+      const result = await this.subcategoryRepository.findOne(options);
+      return result;
+    } catch (error) {
+      console.error(error); 
+    }
   }
 }

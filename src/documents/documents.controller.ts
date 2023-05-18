@@ -11,12 +11,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { Auth } from 'src/auth/authentication/decorators/auth.decorator';
-import { AuthType } from 'src/auth/authentication/enum/auth-type.enum';
-import { Roles } from 'src/auth/authorization/decorators/roles.decorator';
-import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
-import { ActiveUserData } from 'src/auth/interface/active-user-data.interface';
-import { Role } from 'src/users/enum/role.enum';
+import { Auth } from '../auth/authentication/decorators/auth.decorator';
+import { AuthType } from '../auth/authentication/enum/auth-type.enum';
+import { Roles } from '../auth/authorization/decorators/roles.decorator';
+import { ActiveUser } from '../auth/decorators/active-user.decorator';
+import { ActiveUserData } from '../auth/interface/active-user-data.interface';
+import { Role } from '../users/enum/role.enum';
 import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dtos/create.documents.dto';
 import { validate as isUUID } from 'uuid';

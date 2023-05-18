@@ -1,8 +1,8 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { Auth } from 'src/auth/authentication/decorators/auth.decorator';
-import { AuthType } from 'src/auth/authentication/enum/auth-type.enum';
-import { ApiKeyGuard } from 'src/common/guards/api-key/api-key.guard';
-import { Subcategory } from 'src/subcategories/entities/subcategory.entity';
+import { Auth } from '../auth/authentication/decorators/auth.decorator';
+import { AuthType } from '../auth/authentication/enum/auth-type.enum';
+import { ApiKeyGuard } from '../common/guards/api-key/api-key.guard';
+import { Subcategory } from '../subcategories/entities/subcategory.entity';
 import { CategoriesService } from './categories.service';
 import { Category } from './entities/category.entity';
 

@@ -26,6 +26,9 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { Otp } from './users/entities/otp.entity';
 import { UsersService } from './users/users.service';
+import { CommentsModule } from './comments/comments.module';
+import { VotesModule } from './votes/votes.module';
+import { ReplyModule } from './reply/reply.module';
 
 AdminJS.registerAdapter({
   Resource: AdminJSTypeorm.Resource,
@@ -74,6 +77,9 @@ AdminJS.registerAdapter({
     SubcategoriesModule,
     UsersModule,
     AuthModule,
+    CommentsModule,
+    VotesModule,
+    ReplyModule,
   ],
   controllers: [
     AppController,

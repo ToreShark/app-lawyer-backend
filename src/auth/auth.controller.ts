@@ -1,10 +1,18 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Auth } from './authentication/decorators/auth.decorator';
 import { AuthType } from './authentication/enum/auth-type.enum';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { SendCodeDto } from './dtos/send.code.dto';
 import { SignInUserDto } from './dtos/sign-in-user.dto';
+import { Response } from 'express';
 
 @Auth(AuthType.None)
 @Controller('auth')
@@ -18,13 +26,36 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() signUserDto: SignInUserDto) {
-    return this.authService.validateUser(signUserDto.phone, signUserDto.code);
+  async login(
+    @Body() signUserDto: SignInUserDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const { accessToken } = await this.authService.validateUser(
+      signUserDto.phone,
+      signUserDto.code,
+    );
+
+    response.cookie('accessToken', accessToken, {
+      // secure: process.env.NODE_ENV !== 'development',
+      secure: false,
+      httpOnly: false,
+      sameSite: 'strict',
+    });
+
+    return { message: 'Login successful' };
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('refresh-token')
   async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshToken(refreshTokenDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('accessToken');
+    console.log('logout');
+    return { message: 'Logout successful' };
   }
 }

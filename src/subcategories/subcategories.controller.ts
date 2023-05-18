@@ -1,4 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { Auth } from '../auth/authentication/decorators/auth.decorator';
+import { AuthType } from '../auth/authentication/enum/auth-type.enum';
 import { Subcategory } from './entities/subcategory.entity';
 import { SubcategoriesService } from './subcategories.service';
 
@@ -6,6 +8,7 @@ import { SubcategoriesService } from './subcategories.service';
 export class SubcategoriesController {
   constructor(private readonly subcategoriesService: SubcategoriesService) {}
 
+  @Auth(AuthType.None)
   @Get()
   async findAll(): Promise<Subcategory[]> {
     return await this.subcategoriesService.findAll();
@@ -26,6 +29,7 @@ export class SubcategoriesController {
 
   @Get('bySlug/:slug')
   async findBySlug(@Param('slug') slug: string): Promise<Subcategory> {
+    console.log('slug', slug);
     return await this.subcategoriesService.findBySlug(slug);
   }
 

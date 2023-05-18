@@ -1,4 +1,7 @@
-import { DocumentEntity } from 'src/documents/entities/document.entity';
+import { CommentEntity } from '../../comments/entities/comment.entity';
+import { DocumentEntity } from '../../documents/entities/document.entity';
+import { Reply } from '../../reply/entities/reply.entity';
+import { Vote } from '../../votes/entities/vote.entity';
 import {
   BaseEntity,
   Column,
@@ -34,4 +37,13 @@ export class User extends BaseEntity {
 
   @Column({ enum: Role, default: Role.Regular })
   role: Role;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.user)
+  comments: CommentEntity[];
+
+  @OneToMany(() => Vote, (vote) => vote)
+  votes: Vote[];
+
+  @OneToMany(() => Reply, (reply) => reply.user)
+  replies: Reply[];
 }

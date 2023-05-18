@@ -2,7 +2,7 @@ import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
-import { Category } from 'src/categories/entities/category.entity';
+import { Category } from '../../categories/entities/category.entity';
 import { Subcategory } from '../entities/subcategory.entity';
 
 const subcategoriesData = [
