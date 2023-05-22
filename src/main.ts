@@ -33,6 +33,7 @@ async function bootstrap() {
   });
   await connectionSource.initialize();
   app.use(cookieParser());
+  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();

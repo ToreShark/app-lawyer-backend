@@ -39,7 +39,7 @@ export class AuthController {
       // secure: process.env.NODE_ENV !== 'development',
       secure: false,
       httpOnly: false,
-      sameSite: 'strict',
+      sameSite: 'lax',
     });
 
     return { message: 'Login successful' };

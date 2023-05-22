@@ -21,12 +21,22 @@ export class AccessTokenGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
+    // check token in request header
+    // if (!request.headers) {
+    //   throw new UnauthorizedException('No headers present in the request');
+    // }
 
-    if (!request.cookies) {
-      throw new UnauthorizedException('No cookies present in the request');
-    }
+    // if (!request.cookies) {
+    //   throw new UnauthorizedException('No cookies present in the request');
+    // }
 
-    const token = request.cookies['accessToken'];
+    // console.log('request.headers', request.headers);
+    // console.log(
+    //   request.cookies['accessToken'] || request.headers['authorization'],
+    // );
+    const token =
+      request.cookies['accessToken'] ||
+      request.headers['authorization']?.split(' ')?.[1];
 
     if (!token) {
       console.log('No token present in the request');

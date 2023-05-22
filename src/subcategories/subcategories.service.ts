@@ -11,7 +11,7 @@ export class SubcategoriesService {
   ) {}
 
   async findAll(): Promise<Subcategory[]> {
-    return await this.subcategoryRepository.find();
+    return await this.subcategoryRepository.find({ relations: ['category'] });
   }
 
   async findByCategoryId(categoryId: string): Promise<Subcategory[]> {
@@ -45,11 +45,11 @@ export class SubcategoriesService {
   }
   async findBySlug(slug: string): Promise<Subcategory> {
     try {
-      const options = { where: { slug } };
+      const options = { where: { slug }, relations: ['comments'] };
       const result = await this.subcategoryRepository.findOne(options);
       return result;
     } catch (error) {
-      console.error(error); 
+      console.error(error);
     }
   }
 }

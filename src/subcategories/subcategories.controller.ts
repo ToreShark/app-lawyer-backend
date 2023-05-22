@@ -5,6 +5,7 @@ import { Subcategory } from './entities/subcategory.entity';
 import { SubcategoriesService } from './subcategories.service';
 
 @Controller('subcategories')
+// @Auth(AuthType.None)
 export class SubcategoriesController {
   constructor(private readonly subcategoriesService: SubcategoriesService) {}
 
