@@ -38,7 +38,7 @@ export class AuthController {
     response.cookie('accessToken', accessToken, {
       // secure: process.env.NODE_ENV !== 'development',
       secure: false,
-      httpOnly: false,
+      httpOnly: true,
       sameSite: 'lax',
     });
 
