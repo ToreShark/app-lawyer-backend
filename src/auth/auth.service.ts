@@ -35,7 +35,7 @@ export class AuthService {
     const smsResult = await this.httpService.axiosRef.get(
       `https://smsc.kz/sys/send.php?login=App-lawyer&psw=!b7LvQje7@dQRCw&phones=${phone}&mes=Подтверждение primelegal.kz: 1234:${otp}`,
     );
-    console.log('SMS', smsResult);
+    // console.log('SMS', smsResult);
     const otpExpirationDate = new Date(Date.now() + 4 * 60 * 1000);
     await this.userService.createOTP(user, { otp, otpExpirationDate });
 

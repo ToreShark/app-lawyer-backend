@@ -26,7 +26,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   app.enableCors({
     origin: [
-      'https://localhost:3002',
+      'http://localhost:3002',
       'https://164.92.180.13:3002',
       'https://primelegal.kz',
     ],
