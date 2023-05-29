@@ -37,9 +37,9 @@ export class AuthController {
 
     response.cookie('accessToken', accessToken, {
       // secure: process.env.NODE_ENV !== 'development',
-      secure: false,
+      secure: true,
       httpOnly: false,
-      sameSite: 'lax',
+      sameSite: 'none',
     });
 
     return { message: 'Login successful' };
