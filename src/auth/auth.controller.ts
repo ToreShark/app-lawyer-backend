@@ -40,6 +40,9 @@ export class AuthController {
       secure: true,
       httpOnly: false,
       sameSite: 'none',
+      domain: 'primelegal.kz',
+      path: '/',
+      // maxAge: 3600000,
     });
 
     return { message: 'Login successful' };
